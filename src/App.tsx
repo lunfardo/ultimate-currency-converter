@@ -1,26 +1,56 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useTheme, Box, Divider, IconButton } from "@material-ui/core";
+import { ConvertionUnit } from "./components/ConvertionBox";
+import ControlPointIcon from "@material-ui/icons/ControlPoint";
+import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
+import { useState } from "react";
 
-function App() {
+const App = () => {
+  const theme = useTheme();
+  const [convertionBoxIndexes, setConvertionBoxIndexes] = useState<number[]>([
+    0, // we have at least 1 box
+  ]);
+
+  const addNewConvertionBox = () => {
+    setConvertionBoxIndexes((convertionBoxIndexes) => [
+      ...convertionBoxIndexes,
+      convertionBoxIndexes[convertionBoxIndexes.length - 1] + 1,
+    ]);
+  };
+
+  const removeConvertionBox = (indexToRemove: number) => () => {
+    setConvertionBoxIndexes((convertionBoxIndexes) =>
+      convertionBoxIndexes.filter((index) => index !== indexToRemove)
+    );
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Box>
+      <Box margin="auto" padding={10} width="max-content">
+        {convertionBoxIndexes.map((convertionBoxIndex) => (
+          <Box key={convertionBoxIndex} paddingBottom={1} display="flex">
+            <ConvertionUnit index={convertionBoxIndex} />
+            <IconButton
+              onClick={removeConvertionBox(convertionBoxIndex)}
+              aria-label="remove-convertion-box"
+            >
+              <RemoveCircleIcon />
+            </IconButton>
+          </Box>
+        ))}
+
+        <Divider />
+
+        <Box width="100%" display="flex" justifyContent="center">
+          <IconButton
+            onClick={addNewConvertionBox}
+            aria-label="add-another-convertion-box"
+          >
+            <ControlPointIcon />
+          </IconButton>
+        </Box>
+      </Box>
+    </Box>
   );
-}
+};
 
 export default App;
