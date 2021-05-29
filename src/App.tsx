@@ -1,55 +1,92 @@
-import { useTheme, Box, Divider, IconButton } from "@material-ui/core";
-import { ConvertionUnit } from "./components/ConvertionBox";
+import {
+  useTheme,
+  Box,
+  Divider,
+  IconButton,
+  AppBar,
+  Toolbar,
+  IconButtonProps,
+} from "@material-ui/core";
+import { ConversionBox } from "./components/ConversionBox";
 import ControlPointIcon from "@material-ui/icons/ControlPoint";
 import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
-import { useState } from "react";
+import { green } from "@material-ui/core/colors";
+import { memo, useState } from "react";
+
+const RemoveConversionBoxButton = memo(
+  ({ onClick, ...props }: IconButtonProps) => {
+    return (
+      <IconButton
+        color="secondary"
+        onClick={onClick}
+        aria-label="remove-convertion-box"
+        {...props}
+      >
+        <RemoveCircleIcon />
+      </IconButton>
+    );
+  }
+);
+
+const AddConversionBoxButton = memo(
+  ({ onClick, ...props }: IconButtonProps) => {
+    return (
+      <IconButton
+        style={{ color: green[600] }}
+        onClick={onClick}
+        aria-label="remove-convertion-box"
+        {...props}
+      >
+        <ControlPointIcon />
+      </IconButton>
+    );
+  }
+);
 
 const App = () => {
-  const theme = useTheme();
-  const [convertionBoxIndexes, setConvertionBoxIndexes] = useState<number[]>([
+  const [conversionBoxIndexes, setConversionBoxIndexes] = useState<number[]>([
     0, // we have at least 1 box
   ]);
+  const isThereMoreThanOneBox = conversionBoxIndexes.length > 1;
 
-  const addNewConvertionBox = () => {
-    setConvertionBoxIndexes((convertionBoxIndexes) => [
-      ...convertionBoxIndexes,
-      convertionBoxIndexes[convertionBoxIndexes.length - 1] + 1,
+  const addConvertionBox = () => {
+    setConversionBoxIndexes((conversionBoxIndexes) => [
+      ...conversionBoxIndexes,
+      conversionBoxIndexes[conversionBoxIndexes.length - 1] + 1,
     ]);
   };
 
   const removeConvertionBox = (indexToRemove: number) => () => {
-    setConvertionBoxIndexes((convertionBoxIndexes) =>
-      convertionBoxIndexes.filter((index) => index !== indexToRemove)
+    setConversionBoxIndexes((conversionBoxIndexes) =>
+      conversionBoxIndexes.filter((index) => index !== indexToRemove)
     );
   };
 
   return (
-    <Box>
+    <>
+      <AppBar position="fixed">
+        <Toolbar>Ultimate Currency Convertor</Toolbar>
+      </AppBar>
+
       <Box margin="auto" padding={10} width="max-content">
-        {convertionBoxIndexes.map((convertionBoxIndex) => (
+        {conversionBoxIndexes.map((convertionBoxIndex) => (
           <Box key={convertionBoxIndex} paddingBottom={1} display="flex">
-            <ConvertionUnit index={convertionBoxIndex} />
-            <IconButton
-              onClick={removeConvertionBox(convertionBoxIndex)}
-              aria-label="remove-convertion-box"
-            >
-              <RemoveCircleIcon />
-            </IconButton>
+            <ConversionBox />
+            {isThereMoreThanOneBox && (
+              <RemoveConversionBoxButton
+                onClick={removeConvertionBox(convertionBoxIndex)}
+              />
+            )}
           </Box>
         ))}
 
         <Divider />
 
         <Box width="100%" display="flex" justifyContent="center">
-          <IconButton
-            onClick={addNewConvertionBox}
-            aria-label="add-another-convertion-box"
-          >
-            <ControlPointIcon />
-          </IconButton>
+          <AddConversionBoxButton onClick={addConvertionBox} />
         </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 
