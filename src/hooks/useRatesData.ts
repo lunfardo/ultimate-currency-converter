@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { QueryFunction, useQuery } from "react-query";
 import { format, isEqual } from "date-fns";
+import { Rates } from "../types";
 
-type Rates = Record<string, number>;
 type RatesPool = { [convertionPair: string]: Rates };
 
 // const API_KEY = "9b923c95528b39f1055b1e4187a62a58";
@@ -36,7 +36,7 @@ const getCurrenciesPairKey = (
   return sorted ? currencies.sort().join(",") : currencies.join(",");
 };
 
-export const useRates = (
+export const useRatesData = (
   fromCurrency?: string,
   toCurrency?: string,
   convertionDate?: Date

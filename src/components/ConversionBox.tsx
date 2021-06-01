@@ -1,4 +1,11 @@
-import { Box, Snackbar } from "@material-ui/core";
+import {
+  Box,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Snackbar,
+} from "@material-ui/core";
 
 import { memo, useEffect, useState } from "react";
 import { CurrencySelector } from "./CurrencySelector";
@@ -7,12 +14,11 @@ import { OperandInput } from "./atoms/OperandInput";
 import { useCurrencyConvertor } from "../hooks/useCurrencyConvertor";
 import { OperationMode } from "../types";
 import { OperationModeArrowIcon } from "./atoms/OperationModeArrowIcon";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
+
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
+import { DatePicker } from "./atoms/DatePicker";
+import { TrendingUp } from "@material-ui/icons";
+import { DialogTimeSeries } from "./organisms/DialogTimeSeries";
 
 export const ConversionBox: React.FC = memo(() => {
   const [leftOperand, setLeftOperand] = useState<string>();
@@ -20,6 +26,7 @@ export const ConversionBox: React.FC = memo(() => {
   const [leftCurrency, setLeftCurrency] = useState<string>();
   const [rightCurrency, setRightCurrency] = useState<string>();
   const [convertionDate, setConvertionDate] = useState(new Date());
+  const [isHistoryDialogOpen, setIsHistoryDialogOpen] = useState(false);
 
   const [operationMode, setOperationMode] = useState<OperationMode>(
     OperationMode.Forward
@@ -64,31 +71,32 @@ export const ConversionBox: React.FC = memo(() => {
       setShowAlert(false);
     }
   }, [withError, leftOperand, rightOperand]);
-  const handleDateChange = (date: MaterialUiPickersDate) => {
+
+  const onDateChange = (date: MaterialUiPickersDate) => {
     setConvertionDate(date as Date);
+  };
+
+  const onDialogClose = () => {
+    setIsHistoryDialogOpen(false);
   };
 
   return (
     <>
       <div>
-        <Box marginBottom={1}>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-              disableToolbar
-              autoOk={true}
-              variant="inline"
-              format="dd/MM/yyyy"
-              margin="normal"
-              maxDate={new Date()}
-              id="date-picker-inline"
-              label="Date picker inline"
-              value={convertionDate}
-              onChange={handleDateChange}
-              KeyboardButtonProps={{
-                "aria-label": "change date",
+        <Box marginBottom={1} display="flex" alignContent="center">
+          <DatePicker value={convertionDate} onChange={onDateChange} />
+          <Box paddingLeft={2} marginTop={4}>
+            <IconButton
+              disabled={!leftCurrency || !rightCurrency}
+              onClick={() => {
+                setIsHistoryDialogOpen(true);
               }}
-            />
-          </MuiPickersUtilsProvider>
+              style={{ background: "rgb(0 0 0 / 14%)" }}
+              size="small"
+            >
+              <TrendingUp />
+            </IconButton>
+          </Box>
         </Box>
 
         <Box display="flex">
@@ -144,6 +152,15 @@ export const ConversionBox: React.FC = memo(() => {
           {/**/}
         </Box>
       </div>
+      {!!leftCurrency && !!rightCurrency && (
+        <DialogTimeSeries
+          leftCurrency={leftCurrency}
+          rightCurrency={rightCurrency}
+          operationMode={operationMode}
+          DialogProps={{ onClose: onDialogClose, open: isHistoryDialogOpen }}
+        />
+      )}
+
       <Snackbar open={showAlert}>
         <Alert severity="error">Invalid input!</Alert>
       </Snackbar>

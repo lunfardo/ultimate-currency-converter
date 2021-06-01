@@ -7,7 +7,7 @@ x Conversion rates must be pulled from a third-party API. We recommend using htt
 
 
 x Ability to perform multiple conversions at the same time
-- Option to select a different date for the conversion rate
+x Option to select a different date for the conversion rate
 x Bidirectional conversion (user can input either source or target amount)
 - Show historical rates evolution (e.g. with chart)
 

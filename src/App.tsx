@@ -12,6 +12,8 @@ import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
 import { green } from "@material-ui/core/colors";
 import { memo, useState } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 
 const RemoveConversionBoxButton = memo(
   ({ onClick, ...props }: IconButtonProps) => {
@@ -65,37 +67,39 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AppBar position="fixed">
-        <Toolbar>Ultimate Currency Convertor</Toolbar>
-      </AppBar>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <AppBar position="fixed">
+          <Toolbar>Ultimate Currency Convertor 🚀</Toolbar>
+        </AppBar>
 
-      <Box margin="auto" padding={10} width="max-content">
-        {conversionBoxIndexes.map((convertionBoxIndex, index) => (
-          <>
-            <Box
-              key={convertionBoxIndex}
-              paddingTop={1}
-              paddingBottom={1}
-              display="flex"
-            >
-              <ConversionBox />
-              {isThereMoreThanOneBox && (
-                <RemoveConversionBoxButton
-                  onClick={removeConvertionBox(convertionBoxIndex)}
-                />
-              )}
-            </Box>
+        <Box margin="auto" padding={10} width="max-content">
+          {conversionBoxIndexes.map((convertionBoxIndex, index) => (
+            <>
+              <Box
+                key={convertionBoxIndex}
+                paddingTop={1}
+                paddingBottom={1}
+                display="flex"
+              >
+                <ConversionBox />
+                {isThereMoreThanOneBox && (
+                  <RemoveConversionBoxButton
+                    onClick={removeConvertionBox(convertionBoxIndex)}
+                  />
+                )}
+              </Box>
 
-            {index !== conversionBoxIndexes.length - 1 && <Divider />}
-          </>
-        ))}
+              {index !== conversionBoxIndexes.length - 1 && <Divider />}
+            </>
+          ))}
 
-        <Divider />
+          <Divider />
 
-        <Box width="100%" display="flex" justifyContent="center">
-          <AddConversionBoxButton onClick={addConvertionBox} />
+          <Box width="100%" display="flex" justifyContent="center">
+            <AddConversionBoxButton onClick={addConvertionBox} />
+          </Box>
         </Box>
-      </Box>
+      </MuiPickersUtilsProvider>
     </QueryClientProvider>
   );
 };
