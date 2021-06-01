@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/ultimate-currency-converter-dev/static/css/main.6dea0f05.chunk.css",
-    "main.js": "/ultimate-currency-converter-dev/static/js/main.c9b16853.chunk.js",
-    "main.js.map": "/ultimate-currency-converter-dev/static/js/main.c9b16853.chunk.js.map",
-    "runtime-main.js": "/ultimate-currency-converter-dev/static/js/runtime-main.6d730f47.js",
-    "runtime-main.js.map": "/ultimate-currency-converter-dev/static/js/runtime-main.6d730f47.js.map",
-    "static/js/2.0428994b.chunk.js": "/ultimate-currency-converter-dev/static/js/2.0428994b.chunk.js",
-    "static/js/2.0428994b.chunk.js.map": "/ultimate-currency-converter-dev/static/js/2.0428994b.chunk.js.map",
-    "static/js/3.b7a35fed.chunk.js": "/ultimate-currency-converter-dev/static/js/3.b7a35fed.chunk.js",
-    "static/js/3.b7a35fed.chunk.js.map": "/ultimate-currency-converter-dev/static/js/3.b7a35fed.chunk.js.map",
+    "main.js": "/ultimate-currency-converter-dev/static/js/main.a89f09e7.chunk.js",
+    "main.js.map": "/ultimate-currency-converter-dev/static/js/main.a89f09e7.chunk.js.map",
+    "runtime-main.js": "/ultimate-currency-converter-dev/static/js/runtime-main.ba60ea56.js",
+    "runtime-main.js.map": "/ultimate-currency-converter-dev/static/js/runtime-main.ba60ea56.js.map",
+    "static/js/2.7c002cc0.chunk.js": "/ultimate-currency-converter-dev/static/js/2.7c002cc0.chunk.js",
+    "static/js/2.7c002cc0.chunk.js.map": "/ultimate-currency-converter-dev/static/js/2.7c002cc0.chunk.js.map",
+    "static/js/3.a8f1af47.chunk.js": "/ultimate-currency-converter-dev/static/js/3.a8f1af47.chunk.js",
+    "static/js/3.a8f1af47.chunk.js.map": "/ultimate-currency-converter-dev/static/js/3.a8f1af47.chunk.js.map",
     "index.html": "/ultimate-currency-converter-dev/index.html",
     "static/css/main.6dea0f05.chunk.css.map": "/ultimate-currency-converter-dev/static/css/main.6dea0f05.chunk.css.map",
-    "static/js/2.0428994b.chunk.js.LICENSE.txt": "/ultimate-currency-converter-dev/static/js/2.0428994b.chunk.js.LICENSE.txt"
+    "static/js/2.7c002cc0.chunk.js.LICENSE.txt": "/ultimate-currency-converter-dev/static/js/2.7c002cc0.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.6d730f47.js",
-    "static/js/2.0428994b.chunk.js",
+    "static/js/runtime-main.ba60ea56.js",
+    "static/js/2.7c002cc0.chunk.js",
     "static/css/main.6dea0f05.chunk.css",
-    "static/js/main.c9b16853.chunk.js"
+    "static/js/main.a89f09e7.chunk.js"
   ]
 }
