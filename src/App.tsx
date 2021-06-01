@@ -12,7 +12,6 @@ import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
 import { green } from "@material-ui/core/colors";
 import { memo, useState } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtoolsPanel } from "react-query/devtools";
 
 const RemoveConversionBoxButton = memo(
   ({ onClick, ...props }: IconButtonProps) => {

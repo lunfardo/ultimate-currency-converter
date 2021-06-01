@@ -4,17 +4,6 @@ import { QueryFunction, useQuery } from "react-query";
 type Rates = Record<string, number>;
 type RatesPool = {[convertionPair: string]: Rates};
 
-const apiResult = {
-  success: true,
-  timestamp: 1622221034,
-  base: "EUR",
-  date: "2021-05-28",
-  rates: {
-    USD: 1.220308,
-    EUR: 1,
-  },
-};
-
 const API_KEY = "9b923c95528b39f1055b1e4187a62a58";
 
 const fetchRates: QueryFunction = async ({ queryKey }) => {
