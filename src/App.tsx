@@ -1,104 +1,21 @@
-import {
-  Box,
-  Divider,
-  IconButton,
-  AppBar,
-  Toolbar,
-  IconButtonProps,
-} from "@material-ui/core";
-import { ConversionBox } from "./components/ConversionBox";
-import ControlPointIcon from "@material-ui/icons/ControlPoint";
-import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
-import { green } from "@material-ui/core/colors";
-import { memo, useState } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
+
+import { AppBar, Toolbar } from "@material-ui/core";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+
 import DateFnsUtils from "@date-io/date-fns";
 
-const RemoveConversionBoxButton = memo(
-  ({ onClick, ...props }: IconButtonProps) => {
-    return (
-      <IconButton
-        color="secondary"
-        onClick={onClick}
-        aria-label="remove-convertion-box"
-        {...props}
-      >
-        <RemoveCircleIcon />
-      </IconButton>
-    );
-  }
-);
-
-const AddConversionBoxButton = memo(
-  ({ onClick, ...props }: IconButtonProps) => {
-    return (
-      <IconButton
-        style={{ color: green[600] }}
-        onClick={onClick}
-        aria-label="remove-convertion-box"
-        {...props}
-      >
-        <ControlPointIcon />
-      </IconButton>
-    );
-  }
-);
+import { CurrenciesConverter } from "./components/pages/CurrenciesConverter";
 
 const queryClient = new QueryClient();
 const App = () => {
-  const [conversionBoxIndexes, setConversionBoxIndexes] = useState<number[]>([
-    0, // we have at least 1 box
-  ]);
-  const isThereMoreThanOneBox = conversionBoxIndexes.length > 1;
-
-  const addConvertionBox = () => {
-    setConversionBoxIndexes((conversionBoxIndexes) => [
-      ...conversionBoxIndexes,
-      conversionBoxIndexes[conversionBoxIndexes.length - 1] + 1,
-    ]);
-  };
-
-  const removeConvertionBox = (indexToRemove: number) => () => {
-    setConversionBoxIndexes((conversionBoxIndexes) =>
-      conversionBoxIndexes.filter((index) => index !== indexToRemove)
-    );
-  };
-
   return (
     <QueryClientProvider client={queryClient}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <AppBar position="fixed">
-          <Toolbar>Ultimate Currency Convertor 🚀</Toolbar>
+          <Toolbar>Ultimate Currency Converter 🚀</Toolbar>
         </AppBar>
-
-        <Box margin="auto" padding={10} width="max-content">
-          {conversionBoxIndexes.map((convertionBoxIndex, index) => (
-            <>
-              <Box
-                key={convertionBoxIndex}
-                paddingTop={1}
-                paddingBottom={1}
-                display="flex"
-              >
-                <ConversionBox />
-                {isThereMoreThanOneBox && (
-                  <RemoveConversionBoxButton
-                    onClick={removeConvertionBox(convertionBoxIndex)}
-                  />
-                )}
-              </Box>
-
-              {index !== conversionBoxIndexes.length - 1 && <Divider />}
-            </>
-          ))}
-
-          <Divider />
-
-          <Box width="100%" display="flex" justifyContent="center">
-            <AddConversionBoxButton onClick={addConvertionBox} />
-          </Box>
-        </Box>
+        <CurrenciesConverter />
       </MuiPickersUtilsProvider>
     </QueryClientProvider>
   );

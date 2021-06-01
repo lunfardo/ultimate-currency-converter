@@ -13,12 +13,14 @@ import { useTimeSeriesData } from "../hooks/useTimeSeriesData";
 type TimeSeriesChartProps = {
   firstCurrency: string;
   secondCurrency: string;
+  convertionDate: Date;
 };
 export const TimeSeriesChart: React.FC<TimeSeriesChartProps> = ({
   firstCurrency,
   secondCurrency,
+  convertionDate,
 }) => {
-  const data = useTimeSeriesData(firstCurrency, secondCurrency);
+  const data = useTimeSeriesData(firstCurrency, secondCurrency, convertionDate);
 
   if (!data) {
     return null;

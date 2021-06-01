@@ -1,24 +1,17 @@
-import {
-  Box,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  Snackbar,
-} from "@material-ui/core";
-
 import { memo, useEffect, useState } from "react";
-import { CurrencySelector } from "./CurrencySelector";
-import Alert from "@material-ui/lab/Alert";
-import { OperandInput } from "./atoms/OperandInput";
-import { useCurrencyConvertor } from "../hooks/useCurrencyConvertor";
-import { OperationMode } from "../types";
-import { OperationModeArrowIcon } from "./atoms/OperationModeArrowIcon";
 
+import { Box, Snackbar } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
-import { DatePicker } from "./atoms/DatePicker";
-import { TrendingUp } from "@material-ui/icons";
-import { DialogTimeSeries } from "./organisms/DialogTimeSeries";
+
+import { OperandInput } from "../atoms/OperandInput";
+import { OperationModeArrowIcon } from "../atoms/OperationModeArrowIcon";
+import { CurrencySelector } from "../atoms/CurrencySelector";
+import { DatePicker } from "../atoms/DatePicker";
+import { ShowChartsButton } from "../atoms/ShowChartsButton";
+import { DialogTimeSeries } from "../organisms/DialogTimeSeries";
+import { useCurrencyConverter } from "../../hooks/useCurrencyConverter";
+import { OperationMode } from "../../types";
 
 export const ConversionBox: React.FC = memo(() => {
   const [leftOperand, setLeftOperand] = useState<string>();
@@ -26,21 +19,18 @@ export const ConversionBox: React.FC = memo(() => {
   const [leftCurrency, setLeftCurrency] = useState<string>();
   const [rightCurrency, setRightCurrency] = useState<string>();
   const [convertionDate, setConvertionDate] = useState(new Date());
-  const [isHistoryDialogOpen, setIsHistoryDialogOpen] = useState(false);
+  const [isHistoricalDialogOpen, setIsHistoricalDialogOpen] = useState(false);
+  const [printedResult, setPrintedResult] = useState<number | null>(null);
+  const [showAlert, setShowAlert] = useState(false);
+  const [operationMode, setOperationMode] = useState(OperationMode.Forward);
 
-  const [operationMode, setOperationMode] = useState<OperationMode>(
-    OperationMode.Forward
-  );
-  const amount =
-    operationMode === OperationMode.Forward ? leftOperand : rightOperand;
-  const { result, withError } = useCurrencyConvertor(
-    operationMode === OperationMode.Forward ? leftCurrency : rightCurrency,
-    operationMode === OperationMode.Forward ? rightCurrency : leftCurrency,
+  const amount = getSourceAmount(leftOperand, rightOperand, operationMode);
+  const { result, withError } = useCurrencyConverter(
+    getSourceCurrency(leftCurrency, rightCurrency, operationMode),
+    getGoalCurrency(leftCurrency, rightCurrency, operationMode),
     convertionDate,
     Number(amount)
   );
-  const [printedResult, setPrintedResult] = useState<number | null>(null);
-  const [showAlert, setShowAlert] = useState<boolean>(false);
 
   useEffect(() => {
     setPrintedResult(result);
@@ -77,7 +67,7 @@ export const ConversionBox: React.FC = memo(() => {
   };
 
   const onDialogClose = () => {
-    setIsHistoryDialogOpen(false);
+    setIsHistoricalDialogOpen(false);
   };
 
   return (
@@ -86,16 +76,12 @@ export const ConversionBox: React.FC = memo(() => {
         <Box marginBottom={1} display="flex" alignContent="center">
           <DatePicker value={convertionDate} onChange={onDateChange} />
           <Box paddingLeft={2} marginTop={4}>
-            <IconButton
+            <ShowChartsButton
               disabled={!leftCurrency || !rightCurrency}
               onClick={() => {
-                setIsHistoryDialogOpen(true);
+                setIsHistoricalDialogOpen(true);
               }}
-              style={{ background: "rgb(0 0 0 / 14%)" }}
-              size="small"
-            >
-              <TrendingUp />
-            </IconButton>
+            />
           </Box>
         </Box>
 
@@ -152,18 +138,38 @@ export const ConversionBox: React.FC = memo(() => {
           {/**/}
         </Box>
       </div>
+
       {!!leftCurrency && !!rightCurrency && (
         <DialogTimeSeries
           leftCurrency={leftCurrency}
           rightCurrency={rightCurrency}
+          convertionDate={convertionDate}
           operationMode={operationMode}
-          DialogProps={{ onClose: onDialogClose, open: isHistoryDialogOpen }}
+          DialogProps={{ open: isHistoricalDialogOpen, onClose: onDialogClose }}
         />
       )}
 
       <Snackbar open={showAlert}>
-        <Alert severity="error">Invalid input!</Alert>
+        <Alert severity="error">Invalid amount!</Alert>
       </Snackbar>
     </>
   );
 });
+
+const getSourceAmount = (
+  leftOperand?: string,
+  rightOperand?: string,
+  operationMode?: OperationMode
+) => (operationMode === OperationMode.Forward ? leftOperand : rightOperand);
+
+const getSourceCurrency = (
+  leftCurrency?: string,
+  rightCurrency?: string,
+  operationMode?: OperationMode
+) => (operationMode === OperationMode.Forward ? leftCurrency : rightCurrency);
+
+const getGoalCurrency = (
+  leftCurrency?: string,
+  rightCurrency?: string,
+  operationMode?: OperationMode
+) => (operationMode === OperationMode.Forward ? rightCurrency : leftCurrency);

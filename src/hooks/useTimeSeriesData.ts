@@ -1,51 +1,6 @@
 import { useEffect, useState } from "react";
 import { QueryFunction, useQuery } from "react-query";
-import { Rates } from "../types";
-
-const exampple = [
-  {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: "Page F",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: "Page G",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-];
+import { format, isSaturday, isSunday, subDays } from "date-fns";
 
 const API_KEY = "H89XCTMcishFM3lKnZKl";
 
@@ -65,20 +20,41 @@ type HistorialRatios = {
 const fetchTimeSeries: QueryFunction = async ({ queryKey }) => {
   const firstCurrency = queryKey[1] as string;
   const secondCurrency = queryKey[2] as string;
+  const convertionDate = queryKey[3] as Date;
   const currencies = [firstCurrency, secondCurrency].join("");
 
+  let startDate = subDays(convertionDate, 60);
+  let endDate = convertionDate;
+
+  //This API doesnt work if the start_date or end_date is a weekend
+  while (isSaturday(startDate) || isSunday(startDate)) {
+    startDate = subDays(startDate, 1);
+  }
+  while (isSaturday(endDate) || isSunday(endDate)) {
+    endDate = subDays(endDate, 1);
+  }
+
   const response = await fetch(
-    `https://fxmarketapi.com/apitimeseries?api_key=${API_KEY}&currency=${currencies}&start_date=2021-01-27&end_date=2021-06-01`
+    `https://fxmarketapi.com/apitimeseries?api_key=${API_KEY}&currency=${currencies}&start_date=${format(
+      startDate,
+      "yyyy-MM-dd"
+    )}&end_date=${format(endDate, "yyyy-MM-dd")}`
   );
   return await response.json();
 };
 
 export const useTimeSeriesData = (
   firstCurrency: string,
-  secondCurrency: string
+  secondCurrency: string,
+  convertionDate: Date
 ) => {
   const query = useQuery(
-    [`rates-${firstCurrency}-${secondCurrency}`, firstCurrency, secondCurrency],
+    [
+      `rates-${firstCurrency}-${secondCurrency}-${convertionDate}`,
+      firstCurrency,
+      secondCurrency,
+      convertionDate,
+    ],
     fetchTimeSeries,
     {
       refetchOnWindowFocus: false,
@@ -95,13 +71,11 @@ export const useTimeSeriesData = (
     }
     const currencies = [firstCurrency, secondCurrency].join("");
     const newHistoricalData = Object.keys(data.price).map((date: string) => {
-      const dataBlock = data.price[date];
       return {
         date,
-        ratio: dataBlock[currencies]["close"],
+        ratio: data.price[date][currencies]["close"],
       };
     });
-
     setData(newHistoricalData);
   }, [query.data, firstCurrency, secondCurrency]);
 

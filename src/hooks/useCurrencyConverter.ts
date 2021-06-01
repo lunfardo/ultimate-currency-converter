@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useDebounce } from "react-use";
+
 import { useRatesData } from "./useRatesData";
 
 const DEBOUNCE_DELAY_MS = 300;
 
-export const useCurrencyConvertor = (
+export const useCurrencyConverter = (
   fromCurrency?: string,
   toCurrency?: string,
   convertionDate?: Date,
@@ -24,6 +25,7 @@ export const useCurrencyConvertor = (
       if (!ratesPool) {
         return;
       }
+
       const rates = ratesPool[`${fromCurrency}-${toCurrency}`];
 
       if (!rates || !toCurrency || !fromCurrency) {

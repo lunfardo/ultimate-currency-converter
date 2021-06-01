@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { QueryFunction, useQuery } from "react-query";
 import { format, isEqual } from "date-fns";
+
 import { Rates } from "../types";
 
 type RatesPool = { [convertionPair: string]: Rates };

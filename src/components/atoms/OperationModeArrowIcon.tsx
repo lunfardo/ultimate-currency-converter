@@ -1,24 +1,30 @@
+import clsx from "clsx";
 import { makeStyles, Theme } from "@material-ui/core";
 import { ArrowBack, ArrowForward } from "@material-ui/icons";
+import { green, red } from "@material-ui/core/colors";
+
 import { OperationMode } from "../../types";
-import clsx from "clsx";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     padding: theme.spacing(1.5),
   },
   withError: {
-    color: "red",
+    color: red[600],
   },
   NoError: {
-    color: "green",
+    color: green[600],
   },
 }));
 
-export const OperationModeArrowIcon: React.FC<{
+type OperationModeArrowIconProps = {
   operationMode: OperationMode;
   error: Boolean;
-}> = ({ operationMode, error }) => {
+};
+export const OperationModeArrowIcon: React.FC<OperationModeArrowIconProps> = ({
+  operationMode,
+  error,
+}) => {
   const classes = useStyles(error);
   return (
     <div

@@ -1,5 +1,4 @@
 import {
-  Box,
   Dialog,
   DialogContent,
   DialogProps,
@@ -13,12 +12,14 @@ type DialogTimeSeriesProps = {
   leftCurrency: string;
   rightCurrency: string;
   operationMode: OperationMode;
+  convertionDate: Date;
 };
 export const DialogTimeSeries: React.FC<DialogTimeSeriesProps> = ({
   DialogProps,
   leftCurrency,
   rightCurrency,
   operationMode,
+  convertionDate,
 }) => {
   const firstCurrency =
     operationMode === OperationMode.Forward ? leftCurrency : rightCurrency;
@@ -31,12 +32,13 @@ export const DialogTimeSeries: React.FC<DialogTimeSeriesProps> = ({
       {...DialogProps}
     >
       <DialogTitle id="customized-dialog-title">
-        {`Convertion Historical Data: ${firstCurrency} - ${secondCurrency} `}
+        {`Convertion Historical Data: ${firstCurrency} - ${secondCurrency} (last 60 days)`}
       </DialogTitle>
       <DialogContent>
         <TimeSeriesChart
           firstCurrency={firstCurrency}
           secondCurrency={secondCurrency}
+          convertionDate={convertionDate}
         />
       </DialogContent>
     </Dialog>
