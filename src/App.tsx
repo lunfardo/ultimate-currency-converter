@@ -70,15 +70,24 @@ const App = () => {
       </AppBar>
 
       <Box margin="auto" padding={10} width="max-content">
-        {conversionBoxIndexes.map((convertionBoxIndex) => (
-          <Box key={convertionBoxIndex} paddingBottom={1} display="flex">
-            <ConversionBox />
-            {isThereMoreThanOneBox && (
-              <RemoveConversionBoxButton
-                onClick={removeConvertionBox(convertionBoxIndex)}
-              />
-            )}
-          </Box>
+        {conversionBoxIndexes.map((convertionBoxIndex, index) => (
+          <>
+            <Box
+              key={convertionBoxIndex}
+              paddingTop={1}
+              paddingBottom={1}
+              display="flex"
+            >
+              <ConversionBox />
+              {isThereMoreThanOneBox && (
+                <RemoveConversionBoxButton
+                  onClick={removeConvertionBox(convertionBoxIndex)}
+                />
+              )}
+            </Box>
+
+            {index !== conversionBoxIndexes.length - 1 && <Divider />}
+          </>
         ))}
 
         <Divider />

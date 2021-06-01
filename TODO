@@ -1,7 +1,7 @@
 
-- Ability to select the source and target currencies
+x Ability to select the source and target currencies
 x Ability to input the source amount
-- Conversion rates must be pulled from a third-party API. We recommend using https://ratesapi.io/,
+x Conversion rates must be pulled from a third-party API. We recommend using https://ratesapi.io/,
   but other APIs may be used as well, however the actual conversion calculation must be performed by your application
   (also do not use any third-party libraries for it). 
 

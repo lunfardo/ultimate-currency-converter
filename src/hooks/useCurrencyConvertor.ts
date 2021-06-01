@@ -7,15 +7,16 @@ const DEBOUNCE_DELAY_MS = 300;
 export const useCurrencyConvertor = (
   fromCurrency?: string,
   toCurrency?: string,
+  convertionDate?: Date,
   amount?: number
 ): { result: number | null; withError: boolean } => {
   const [result, setResult] = useState<number | null>(null);
   const [withError, setWithError] = useState<boolean>(false);
-  const ratesPool = useRates(fromCurrency, toCurrency);
+  const ratesPool = useRates(fromCurrency, toCurrency, convertionDate);
 
   useDebounce(
     () => {
-      if(!ratesPool) {
+      if (!ratesPool) {
         return;
       }
       const rates = ratesPool[`${fromCurrency}-${toCurrency}`];
