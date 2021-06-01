@@ -4,7 +4,8 @@ import { QueryFunction, useQuery } from "react-query";
 type Rates = Record<string, number>;
 type RatesPool = {[convertionPair: string]: Rates};
 
-const API_KEY = "9b923c95528b39f1055b1e4187a62a58";
+// const API_KEY = "9b923c95528b39f1055b1e4187a62a58";
+const API_KEY = "c266944752f24393afe3cf6f9fde2f3a";
 
 const fetchRates: QueryFunction = async ({ queryKey }) => {
   const currenciesMerged = queryKey[1] as string;
@@ -12,8 +13,8 @@ const fetchRates: QueryFunction = async ({ queryKey }) => {
     return;
   }
   const response = await fetch(
-    `http://api.exchangeratesapi.io/v1/latest?access_key=${API_KEY}&symbols=${currenciesMerged}`
-  );
+    `https://openexchangerates.org/api/latest.json?app_id=${API_KEY}&symbols=${currenciesMerged}`
+    );
   return await response.json();
 };
 
