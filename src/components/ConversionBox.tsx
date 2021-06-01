@@ -1,4 +1,4 @@
-import { Box, Divider, Snackbar, TextField } from "@material-ui/core";
+import { Box, Snackbar } from "@material-ui/core";
 
 import { memo, useEffect, useState } from "react";
 import { CurrencySelector } from "./CurrencySelector";
@@ -9,7 +9,6 @@ import { OperationMode } from "../types";
 import { OperationModeArrowIcon } from "./atoms/OperationModeArrowIcon";
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
