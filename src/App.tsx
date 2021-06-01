@@ -1,5 +1,4 @@
 import {
-  useTheme,
   Box,
   Divider,
   IconButton,
@@ -12,6 +11,8 @@ import ControlPointIcon from "@material-ui/icons/ControlPoint";
 import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
 import { green } from "@material-ui/core/colors";
 import { memo, useState } from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtoolsPanel } from "react-query/devtools";
 
 const RemoveConversionBoxButton = memo(
   ({ onClick, ...props }: IconButtonProps) => {
@@ -43,6 +44,7 @@ const AddConversionBoxButton = memo(
   }
 );
 
+const queryClient = new QueryClient();
 const App = () => {
   const [conversionBoxIndexes, setConversionBoxIndexes] = useState<number[]>([
     0, // we have at least 1 box
@@ -63,7 +65,7 @@ const App = () => {
   };
 
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <AppBar position="fixed">
         <Toolbar>Ultimate Currency Convertor</Toolbar>
       </AppBar>
@@ -86,7 +88,7 @@ const App = () => {
           <AddConversionBoxButton onClick={addConvertionBox} />
         </Box>
       </Box>
-    </>
+    </QueryClientProvider>
   );
 };
 

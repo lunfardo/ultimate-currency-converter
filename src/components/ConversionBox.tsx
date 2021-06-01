@@ -11,6 +11,8 @@ import { OperationModeArrowIcon } from "./atoms/OperationModeArrowIcon";
 export const ConversionBox: React.FC = memo(() => {
   const [leftOperand, setLeftOperand] = useState<string>();
   const [rightOperand, setRightOperand] = useState<string>();
+  const [leftCurrency, setLeftCurrency] = useState<string>();
+  const [rightCurrency, setRightCurrency] = useState<string>();
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [operationMode, setOperationMode] = useState<OperationMode>(
     OperationMode.Forward
@@ -18,28 +20,32 @@ export const ConversionBox: React.FC = memo(() => {
   const amount =
     operationMode === OperationMode.Forward ? leftOperand : rightOperand;
   const { result, withError } = useCurrencyConvertor(
-    operationMode === OperationMode.Forward ? "USD" : "EUR",
-    operationMode === OperationMode.Forward ? "EUR" : "USD",
+    operationMode === OperationMode.Forward ? leftCurrency : rightCurrency,
+    operationMode === OperationMode.Forward ? rightCurrency : leftCurrency,
     Number(amount)
   );
+  const [printedResult,setPrintedResult] = useState<number | null>(null);
+
+  useEffect(() => {
+    setPrintedResult(result);
+  },[result])
 
   //Assign result value according to the operation mode
   useEffect(() => {
-    if (!result) {
+    if (!printedResult) {
       return;
     }
-    const parsedResult = result.toFixed(3);
+    const fixedResult = printedResult.toFixed(3);
     if (operationMode === OperationMode.Forward) {
-      setRightOperand(parsedResult);
+      setRightOperand(fixedResult);
     } else {
-      setLeftOperand(parsedResult);
+      setLeftOperand(fixedResult);
     }
-  }, [result, operationMode]);
+  }, [printedResult,operationMode]);
 
   //Check for inputs errors (ignore them if any operand was cleaned up)
   useEffect(() => {
-    const someEmptyValue = !leftOperand || !rightOperand;
-    if (someEmptyValue) {
+    if (!leftOperand || !rightOperand) {
       setShowAlert(false);
       return;
     }
@@ -56,38 +62,48 @@ export const ConversionBox: React.FC = memo(() => {
         {/* LEFT  OPERAND */}
         <OperandInput
           error={showAlert}
-          value={leftOperand}
+          value={leftOperand ?? ""}
           onChange={(event) => {
             setLeftOperand(event.target.value);
           }}
           onKeyDown={() => {
+            setPrintedResult(null);
             setOperationMode(OperationMode.Forward);
           }}
           label={operationMode === OperationMode.Forward ? "From" : "To"}
         />
         <Box marginLeft={1}>
-          <CurrencySelector />
+          <CurrencySelector
+            onChange={(event, value) => {
+              setLeftCurrency(value ?? "");
+            }}
+          />
         </Box>
         {/**/}
 
         <Box marginLeft={1} marginRight={1}>
           <OperationModeArrowIcon
-            error={withError}
+            error={showAlert}
             operationMode={operationMode}
           />
         </Box>
 
         {/* RIGHT  OPERAND */}
         <Box marginRight={1}>
-          <CurrencySelector />
+          <CurrencySelector
+            onChange={(event, value) => {
+              setRightCurrency(value ?? "");
+            }}
+          />
         </Box>
         <OperandInput
           error={showAlert}
-          value={rightOperand}
+          value={rightOperand ?? ""}
           onChange={(event) => {
             setRightOperand(event.target.value);
           }}
           onKeyDown={() => {
+            setPrintedResult(null);
             setOperationMode(OperationMode.Backward);
           }}
           label={operationMode === OperationMode.Forward ? "To" : "From"}
