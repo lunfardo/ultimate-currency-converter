@@ -6,9 +6,6 @@ import { Rates } from "../types";
 
 type RatesPool = { [convertionPair: string]: Rates };
 
-// const API_KEY = "9b923c95528b39f1055b1e4187a62a58";
-const API_KEY = "c266944752f24393afe3cf6f9fde2f3a";
-
 const fetchRates: QueryFunction = async ({ queryKey }) => {
   const currenciesMerged = queryKey[1] as string;
   const convertionDate = queryKey[2] as Date;
@@ -18,11 +15,13 @@ const fetchRates: QueryFunction = async ({ queryKey }) => {
   const today = new Date();
 
   const endpoint = isEqual(convertionDate, today)
-    ? `https://openexchangerates.org/api/latest.json?app_id=${API_KEY}&symbols=${currenciesMerged}`
+    ? `https://openexchangerates.org/api/latest.json?app_id=${process.env.REACT_APP_OPENEXCHANGE_API_KEY}&symbols=${currenciesMerged}`
     : `https://openexchangerates.org/api/historical/${format(
         convertionDate,
         "yyyy-MM-dd"
-      )}.json?app_id=${API_KEY}&symbols=${currenciesMerged}`;
+      )}.json?app_id=${
+        process.env.REACT_APP_OPENEXCHANGE_API_KEY
+      }&symbols=${currenciesMerged}`;
 
   const response = await fetch(endpoint);
   return await response.json();

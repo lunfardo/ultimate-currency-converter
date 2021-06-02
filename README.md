@@ -16,6 +16,7 @@ Limitations:
 - Time series is only for the last 60 days, it should be extended to give the user more freedom about the range
 - Error handling is visually very limited
 - Charts button can be improved
+- .env shouldn't be public
 
 Notes
 

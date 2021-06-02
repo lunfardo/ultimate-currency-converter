@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { QueryFunction, useQuery } from "react-query";
 import { format, isSaturday, isSunday, subDays } from "date-fns";
 
-const API_KEY = "H89XCTMcishFM3lKnZKl";
-
 type HistoricalRates = {
   [date: string]: {
     [currencies: string]: {
@@ -35,7 +33,9 @@ const fetchTimeSeries: QueryFunction = async ({ queryKey }) => {
   }
 
   const response = await fetch(
-    `https://fxmarketapi.com/apitimeseries?api_key=${API_KEY}&currency=${currencies}&start_date=${format(
+    `https://fxmarketapi.com/apitimeseries?api_key=${
+      process.env.REACT_APP_FXMARKET_API_KEY
+    }&currency=${currencies}&start_date=${format(
       startDate,
       "yyyy-MM-dd"
     )}&end_date=${format(endDate, "yyyy-MM-dd")}`

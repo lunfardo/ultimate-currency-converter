@@ -19,7 +19,7 @@ export const CurrenciesConverter = () => {
   };
 
   const removeConversionBox = (indexToRemove: number) => () => {
-    console.log("removing2");
+    console.log(process.env);
     setConversionBoxIndexes((conversionBoxIndexes) =>
       conversionBoxIndexes.filter((index) => index !== indexToRemove)
     );
