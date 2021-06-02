@@ -46,7 +46,8 @@ export const TimeSeriesChart: React.FC<TimeSeriesChartProps> = ({
         <Legend />
         <Line
           type="monotone"
-          dataKey="ratio"
+          dataKey="rate"
+          name={`${firstCurrency}-${secondCurrency} Rate`}
           stroke="#8884d8"
           activeDot={{ r: 8 }}
         />

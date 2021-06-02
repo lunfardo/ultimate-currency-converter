@@ -38,9 +38,9 @@ const getCurrenciesPairKey = (
 };
 
 export const useRatesData = (
-  fromCurrency?: string,
-  toCurrency?: string,
-  convertionDate?: Date
+  fromCurrency: string,
+  toCurrency: string,
+  convertionDate: Date
 ): RatesPool | null => {
   const [ratesMap, setRatesMap] = useState<RatesPool | null>(null);
   const [ratesUniquePair, setRatesUniquePair] = useState<string>("");

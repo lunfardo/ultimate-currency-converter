@@ -12,9 +12,9 @@ type HistoricalRates = {
   };
 };
 
-type HistorialRatios = {
+type HistorialRates = {
   date: string;
-  ratio: number;
+  rate: number;
 };
 
 const fetchTimeSeries: QueryFunction = async ({ queryKey }) => {
@@ -62,7 +62,7 @@ export const useTimeSeriesData = (
       staleTime: 60,
     }
   );
-  const [data, setData] = useState<HistorialRatios[] | null>(null);
+  const [data, setData] = useState<HistorialRates[] | null>(null);
 
   useEffect(() => {
     const data = query.data as Record<"price", HistoricalRates> | undefined;
@@ -73,7 +73,7 @@ export const useTimeSeriesData = (
     const newHistoricalData = Object.keys(data.price).map((date: string) => {
       return {
         date,
-        ratio: data.price[date][currencies]["close"],
+        rate: data.price[date][currencies]["close"],
       };
     });
     setData(newHistoricalData);

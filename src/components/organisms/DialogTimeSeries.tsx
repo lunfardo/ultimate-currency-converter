@@ -6,6 +6,7 @@ import {
 } from "@material-ui/core";
 import { TimeSeriesChart } from "../../molecules/TimeSeriesChart";
 import { OperationMode } from "../../types";
+import { getGoalCurrency, getSourceCurrency } from "../../utils";
 
 type DialogTimeSeriesProps = {
   DialogProps: DialogProps;
@@ -21,10 +22,16 @@ export const DialogTimeSeries: React.FC<DialogTimeSeriesProps> = ({
   operationMode,
   convertionDate,
 }) => {
-  const firstCurrency =
-    operationMode === OperationMode.Forward ? leftCurrency : rightCurrency;
-  const secondCurrency =
-    operationMode === OperationMode.Forward ? rightCurrency : leftCurrency;
+  const firstCurrency = getSourceCurrency(
+    leftCurrency,
+    rightCurrency,
+    operationMode
+  );
+  const secondCurrency = getGoalCurrency(
+    leftCurrency,
+    rightCurrency,
+    operationMode
+  );
   return (
     <Dialog
       fullScreen
