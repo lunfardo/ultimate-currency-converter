@@ -1,3 +1,4 @@
+import { subYears } from "date-fns";
 import {
   KeyboardDatePicker,
   KeyboardDatePickerProps,
@@ -13,6 +14,7 @@ export const DatePicker = (props: KeyboardDatePickerProps) => {
       format="dd/MM/yyyy"
       margin="normal"
       maxDate={new Date()}
+      minDate={subYears(new Date(), 10)}
       id="date-picker-inline"
       label="Convertion Date"
     />
