@@ -31,7 +31,6 @@ export const useCurrencyConverter = (
       if (!rates || !toCurrency || !fromCurrency) {
         return;
       }
-
       setResult((rates[toCurrency] * amount) / rates[fromCurrency]);
       setWithError(false);
     },

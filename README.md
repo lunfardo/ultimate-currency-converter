@@ -17,6 +17,7 @@ Limitations:
 - Error handling is visually very limited
 - Charts button can be improved
 - .env shouldn't be public
+- Missing closing button on dialog (use escape key or clicking outside)
 
 Notes
 
