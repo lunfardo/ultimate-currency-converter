@@ -34,12 +34,13 @@ export const DialogTimeSeries: React.FC<DialogTimeSeriesProps> = ({
   );
   return (
     <Dialog
-      fullScreen
+      fullWidth
+      maxWidth="md"
       aria-labelledby="currency-history-dialog"
       {...DialogProps}
     >
       <DialogTitle id="customized-dialog-title">
-        {`Convertion Historical Data: ${firstCurrency} - ${secondCurrency} (last 60 days)`}
+        {`Historical ${firstCurrency}-${secondCurrency} Rates (60 days previous to convertion date, no weekends)`}
       </DialogTitle>
       <DialogContent>
         <TimeSeriesChart
