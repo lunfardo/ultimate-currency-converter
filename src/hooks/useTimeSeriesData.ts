@@ -70,10 +70,11 @@ export const useTimeSeriesData = (
 
   useEffect(() => {
     const data = query.data as Record<"price", HistoricalRates> | undefined;
-    if (!data) {
+    if (!data || typeof data.price !== "object") {
       return;
     }
     const currencies = [firstCurrency, secondCurrency].join("");
+
     const newHistoricalData: HistorialRates[] = Object.keys(data.price)
       .map((date: string) => {
         const rate = data.price[date][currencies]["close"];
