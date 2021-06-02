@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { QueryFunction, useQuery } from "react-query";
-import { format, isEqual } from "date-fns";
+import { format, isSameDay, isValid } from "date-fns";
 
 import { Rates } from "../types";
 
@@ -12,9 +12,11 @@ const fetchRates: QueryFunction = async ({ queryKey }) => {
   if (!currenciesMerged) {
     return;
   }
+  if (!isValid(convertionDate)) {
+    return;
+  }
   const today = new Date();
-
-  const endpoint = isEqual(convertionDate, today)
+  const endpoint = isSameDay(convertionDate, today)
     ? `https://openexchangerates.org/api/latest.json?app_id=${process.env.REACT_APP_OPENEXCHANGE_API_KEY}&symbols=${currenciesMerged}`
     : `https://openexchangerates.org/api/historical/${format(
         convertionDate,

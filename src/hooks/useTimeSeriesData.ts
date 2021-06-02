@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { QueryFunction, useQuery } from "react-query";
-import { format, isSaturday, isSunday, subDays } from "date-fns";
+import { format, isSaturday, isSunday, isValid, subDays } from "date-fns";
 
 type HistoricalRates = {
   [date: string]: {
     [currencies: string]: {
-      close: number;
+      close: number | undefined; //NaN
     };
   };
 };
@@ -20,6 +20,10 @@ const fetchTimeSeries: QueryFunction = async ({ queryKey }) => {
   const secondCurrency = queryKey[2] as string;
   const convertionDate = queryKey[3] as Date;
   const currencies = [firstCurrency, secondCurrency].join("");
+
+  if (!isValid(convertionDate)) {
+    return;
+  }
 
   let startDate = subDays(convertionDate, 60);
   let endDate = convertionDate;
@@ -70,12 +74,18 @@ export const useTimeSeriesData = (
       return;
     }
     const currencies = [firstCurrency, secondCurrency].join("");
-    const newHistoricalData = Object.keys(data.price).map((date: string) => {
-      return {
-        date,
-        rate: data.price[date][currencies]["close"],
-      };
-    });
+    const newHistoricalData: HistorialRates[] = Object.keys(data.price)
+      .map((date: string) => {
+        const rate = data.price[date][currencies]["close"];
+        if (Number.isNaN(rate)) {
+          return null;
+        }
+        return {
+          date,
+          rate: data.price[date][currencies]["close"],
+        };
+      })
+      .filter((value): value is HistorialRates => value !== null);
     setData(newHistoricalData);
   }, [query.data, firstCurrency, secondCurrency]);
 
