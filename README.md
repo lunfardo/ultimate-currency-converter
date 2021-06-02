@@ -12,6 +12,8 @@ What this solution contains:
 
 Limitations:
 
+- Fxmarket API is very unstable (at least the free version) coulnt find anything better,
+  it seems to work only when using using USD,JPY,CAD,GBP
 - Only works using dates between the past 10 years (otherwise time-series api wont work)
 - Time-series is only for the last 60 days, it should be extended to give the user more freedom about the range
 - Error handling is visually very limited
