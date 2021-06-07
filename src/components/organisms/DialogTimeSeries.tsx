@@ -4,7 +4,7 @@ import {
   DialogProps,
   DialogTitle,
 } from "@material-ui/core";
-import { TimeSeriesChart } from "../../molecules/TimeSeriesChart";
+import { TimeSeriesChart } from "../molecules/TimeSeriesChart";
 import { OperationMode } from "../../types";
 import { getGoalCurrency, getSourceCurrency } from "../../utils";
 
