@@ -9,7 +9,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { useTimeSeriesData } from "../hooks/useTimeSeriesData";
+import { useTimeSeriesData } from "../../hooks/useTimeSeriesData";
 
 type TimeSeriesChartProps = {
   firstCurrency: string;
